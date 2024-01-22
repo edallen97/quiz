@@ -46,10 +46,10 @@ function initQuestions(){
         {
             question: 'Question 3',
             answers: [
-                1,
-                2,
-                3,
-                4
+                5,
+                6,
+                7,
+                8
             ],
             correctAnswer : 2,
         },
@@ -57,10 +57,10 @@ function initQuestions(){
         {
             question: 'Question 4',
             answers: [
-                1,
-                2,
-                3,
-                4
+                9,
+                10,
+                11,
+                12
             ],
             correctAnswer : 2,
         }
@@ -107,18 +107,14 @@ function populateQuestion(currentIndex, ammendedAnswer=false) {
         
         let answerBtnLabel = document.createElement('label')
         answerBtnLabel.setAttribute('for', 'answer' + [i])
-        console.log(answers[1])
         answerBtnLabel.setAttribute('innerText', answers[i])
 
         let lineBreak = document.createElement('br')
 
         
-        
-
         // need to questionObject[++] on next question click
         answerBtnLabel.innerHTML = questionObject[currentIndex].answers[i]
-        console.log(currentIndex + ' A')
-
+        
         answerSelectorForm.append(answerBtn, answerBtnLabel, lineBreak);
 
         }
@@ -139,11 +135,9 @@ function populateQuestion(currentIndex, ammendedAnswer=false) {
     //     finalScreen()
     // })
     // }
-
-   
-
 }
     
+
         // display next question
 function nextQuestion(currentIndex){
     //check answer provided
@@ -151,13 +145,17 @@ function nextQuestion(currentIndex){
     if(answerProvided){
         if(currentIndex <= questionObject.length){
             //store answer
-        submitAnswer(currentIndex)
-        //remove existing question
-        removeQuestion()
-        //populate new question
-        currentIndex++
-        populateQuestion(currentIndex)
-        console.log(questionDiv)
+            wasCheckBoxTicked = submitAnswer(currentIndex)
+            if(wasCheckBoxTicked){
+                //remove existing question
+                removeQuestion()
+                //populate new question
+                currentIndex++
+                populateQuestion(currentIndex)
+            } else {
+                // What do we do if no answer was selected?
+                alert("Please select an answer")
+            }
         } else {
             //show our final form
             displayResults()
@@ -170,10 +168,7 @@ function nextQuestion(currentIndex){
 
     }
 
-function checkAnswer(){
-    //make this check if an answer has been selected
-    return true // or true if it has been selected
-}
+
 function removeQuestion(){
     let answerSelectorForm = document.querySelector('div.answerSelectorForm')
     answerSelectorForm.innerHTML = ""
@@ -182,16 +177,19 @@ function removeQuestion(){
 // submitBtn click, add answer choice to array, display next question
 function submitAnswer(currentIndex) {
     currentQuestionObject = questionObject[currentIndex]
-    console.log('here')
     let inputs = document.querySelectorAll('.answerSelectorForm input[type="radio"]')
+    let checkTest = false
     for (let i = 0; i < inputs.length; i++){
-        console.log(i)
         if (inputs[i].checked) {
+            checkTest = true
             currentQuestionObject.providedAnswer = i
             console.log(currentQuestionObject)
+            break
         }
     }
+    return checkTest
 }
+
 
 function displayResults(){
 
